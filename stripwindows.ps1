@@ -1,21 +1,50 @@
-Set-Service -StartupType Disabled -Name "DiagTrack"
-Set-Service -StartupType Disabled -Name "DusmSvc"
-Set-Service -StartupType Disabled -Name "LanmanWorkstation"
-Set-Service -StartupType Disabled -Name "WSearch"
-Set-Service -StartupType Disabled -Name "WpnService"
-Set-Service -StartupType Disabled -Name "LicenseManager"
-Set-Service -StartupType Disabled -Name "EventLog"
-Set-Service -StartupType Disabled -Name "TokenBroker"
-Set-Service -StartupType Disabled -Name "UsoSvc"
-Set-Service -StartupType Disabled -Name "TabletInputService"
-Set-Service -StartupType Disabled -Name "DPS"
-Set-Service -StartupType Disabled -Name "iphlpsvc"
-Set-Service -StartupType Disabled -Name "NcbService"
-Set-Service -StartupType Disabled -Name "Spooler"
-Set-Service -StartupType Disabled -Name "PcaSvc"
-Set-Service -StartupType Disabled -Name "LanmanServer"
-Set-Service -StartupType Disabled -Name "SysMain"
-Set-Service -StartupType Disabled -Name "lmhosts"
-Set-Service -StartupType Disabled -Name "Themes"
-Set-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Winlogon" -Name "Shell" -Value "C:\Program Files (x86)\Overwatch\_retail_\Overwatch.exe"
+<#
+ # File: Win 11 Optimizer
+ # Created Date: Tuesday, October 18th 2022, 6:35:19 pm
+ # HISTORY:
+ # Date      	By	    Comments
+ # ----------	---  	----------------------------------------------------------
+ # 2022-10-18	C.V.	Created
+ #>
+
+ # Set variables
+ 
+$services = @(
+"DiagTrack",
+"DusmSvc",
+"LanmanWorkstation",
+"WSearch",
+"WpnService",
+"LicenseManager",
+"EventLog",
+"TokenBroker",
+"UsoSvc",
+"TabletInputService",
+"DPS",
+"iphlpsvc",
+"NcbService",
+"Spooler",
+"PcaSvc",
+"LanmanServer",
+"SysMain",
+"lmhosts",
+"Themes"
+)
+
+$action = Read-Host 'Please verify which option you wish to do. Enable or Disable?'
+if ($action -like '*enable*' ) {
+    $action = 'Enabled'
+} elseif ($action -like '*disable*') {
+    $action = 'Disabled'
+}
+
+# Start actions
+foreach ($service in $services) {
+    Set-Service -StartupType $action -Name $service
+    Write-Host $service 'has been' $action
+}
+
+Write-Host 'Action confirmed: '$action
+Set-ItemProperty -Path HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Winlogon -Name Shell -Value C:\Program Files (x86)\Overwatch\_retail_\Overwatch.exe
+Write-Host 'Now rebooting'
 shutdown /r /t 0
