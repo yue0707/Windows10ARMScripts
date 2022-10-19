@@ -45,6 +45,29 @@ foreach ($service in $services) {
 }
 
 Write-Host 'Action confirmed: '$action
-Set-ItemProperty -Path HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Winlogon -Name Shell -Value C:\Program Files (x86)\Overwatch\_retail_\Overwatch.exe
-Write-Host 'Now rebooting'
-shutdown /r /t 0
+
+try {
+    Set-ItemProperty -Path HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Winlogon -Name Shell -Value C:\Program Files (x86)\Overwatch\_retail_\Overwatch.exe
+} catch {
+    Write-Host 'Unable to set item property for Overwatch.exe. Please enter path of Overwatch.exe file (ex. C:\:\Program Files (x86)\Overwatch\_retail_\Overwatch.exe)'
+    $path = Read-Host 'Full Directory Path: '
+
+}
+
+try {
+    Set-ItemProperty -Path HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Winlogon -Name Shell -Value $path
+} catch {
+    Write-Host 'Unable to set Item Property. Critical Error'
+    return 1
+    end
+}
+
+$action2 = Read-Host 'Are you prepared to shut down?'
+
+if ($action2 -like '*yes*') {
+    Write-Host 'Rebooting now...'
+    shutdown /r /t 5
+} elseif ($action2 -like '*no*') {
+    Write-Host 'Please reboot manually then.'
+}
+
