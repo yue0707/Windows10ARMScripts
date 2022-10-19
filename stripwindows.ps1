@@ -4,6 +4,7 @@
  # HISTORY:
  # Date      	By	    Comments
  # ----------	---  	----------------------------------------------------------
+ # 2022-10-19	C.V.	Added further error handling measures
  # 2022-10-18	C.V.	Created
  #>
 
